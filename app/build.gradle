@@ -15,6 +15,9 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField 'String', 'BASE_URL', "\"https://community-open-weather-map.p.rapidapi.com/\""
+        buildConfigField 'String', 'API_KEY', "\"4411cb4665msh71443bc80a0f428p1e9440jsn6fb0105c4524\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -24,8 +27,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     buildFeatures {
         viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     kapt {
         arguments {
@@ -73,7 +84,7 @@ dependencies {
     def glide_version = "4.11.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
-    
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

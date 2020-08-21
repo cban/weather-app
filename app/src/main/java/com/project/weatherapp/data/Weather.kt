@@ -1,3 +1,5 @@
+package com.project.weatherapp.data
+
 data class Weather(
     val id: Int,
     val main: String,
