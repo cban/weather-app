@@ -1,4 +1,4 @@
-package com.potter.triwizard.util
+package com.project.weatherapp.utils
 
 enum class Status {
     SUCCESS,
