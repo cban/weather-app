@@ -1,14 +1,13 @@
-package com.project.weatherapp
+package com.project.weatherapp.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.project.weatherapp.data.DetailedDayWeather
 import com.project.weatherapp.databinding.ActivityMainBinding
-import com.project.weatherapp.ui.WeatherForecastAdapter
-import com.project.weatherapp.ui.WeatherForecastViewModel
 import com.project.weatherapp.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,18 +15,25 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel : WeatherForecastViewModel by viewModels()
+    private val viewModel: WeatherForecastViewModel by viewModels()
     private lateinit var adapter: WeatherForecastAdapter
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        adapter = WeatherForecastAdapter { _ ->
-            TODO()
+        adapter = WeatherForecastAdapter { dailyDetailedWeather ->
+
+            launchDetailsScreen(dailyDetailedWeather)
         }
         binding.recyclerView.adapter = adapter
         setLocation()
         setContentView(binding.root)
+    }
+
+    private fun launchDetailsScreen(detailedDayWeather: DetailedDayWeather) {
+        val intent = Intent(this, DayForecastDetailActivity::class.java)
+        intent.putExtra(DAY_DETAILS_ID, detailedDayWeather)
+        startActivity(intent)
     }
 
     private fun setLocation() {
@@ -35,20 +41,22 @@ class MainActivity : AppCompatActivity() {
         viewModel.weatherResponse.observe(this, Observer { it ->
             when (it.status) {
                 Status.SUCCESS -> {
-                    Toast.makeText(this,"WORKES",Toast.LENGTH_LONG).show()
                     viewModel.dailyWeatherForecastList.observe(this, Observer {
                         adapter.submitList(it)
+                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_LONG).show()
                     })
                 }
                 Status.ERROR -> {
-                    Toast.makeText(this,it.message,Toast.LENGTH_LONG).show()
-                    Log.d("MAIN",it.message.toString())
-                    Log.d("MAIN",it.data.toString())
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                 }
                 Status.LOADING -> {
-                    Toast.makeText(this,"LOADING",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "LOADING", Toast.LENGTH_LONG).show()
                 }
             }
         })
+    }
+
+    companion object {
+        const val DAY_DETAILS_ID = "id"
     }
 }
