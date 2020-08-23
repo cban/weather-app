@@ -11,6 +11,7 @@ import com.project.weatherapp.data.WeatherResponse
 import com.project.weatherapp.repository.WeatherRepository
 import com.project.weatherapp.utils.Resource
 import com.project.weatherapp.utils.formatWeek
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WeatherForecastViewModel @ViewModelInject constructor(private val repository: WeatherRepository) :
@@ -40,16 +41,17 @@ class WeatherForecastViewModel @ViewModelInject constructor(private val reposito
                         weatherListItem.main.pressure.toString(),
                         weatherListItem.main.sea_level.toString(),
                         weatherListItem.main.humidity.toString(),
-                        weatherListItem.wind.speed.toString()
+                        weatherListItem.wind.speed.toString(),
+                        weatherListItem.weather[0].icon
                     )
                 dailyWeatherList.add(dailyWeather)
             }
         }
-        _dailyWeatherForecastList.value = dailyWeatherList
+        _dailyWeatherForecastList.postValue(dailyWeatherList)
     }
 
     fun getWeatherForeCastDataByLocation(latitude: String, longitude: String, units: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _weatherResponse.postValue(Resource.loading(null))
             repository.getWeatherForecast(latitude, longitude, units).let { response ->
                 if (response.isSuccessful) {

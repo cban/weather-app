@@ -5,12 +5,13 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class DetailedDayWeather(
-    val day:String,
+    val day: String,
     val temp: String,
     val temp_min: String,
     val temp_max: String,
     val pressure: String,
     val sea_level: String,
     val humidity: String,
-    val wind:String
+    val wind: String,
+    val icon: String
 ) : Parcelable
