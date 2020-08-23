@@ -25,11 +25,10 @@ class WeatherForecastViewModel @ViewModelInject constructor(private val reposito
     val dailyWeatherForecastList: LiveData<List<DetailedDayWeather>>
         get() = _dailyWeatherForecastList
 
-    private fun getDailyForeCastData(response: WeatherResponse) {
+    private fun setWeatherForecastList(response: WeatherResponse) {
         val weatherList: List<WeatherList> = response.list
         val dailyWeatherList: MutableList<DetailedDayWeather> = arrayListOf()
         weatherList.forEach { weatherListItem ->
-
             if (weatherListItem.dt_txt.endsWith("12:00:00")) {
                 val day: String = formatWeek(weatherListItem.dt_txt)
                 val dailyWeather =
@@ -42,7 +41,8 @@ class WeatherForecastViewModel @ViewModelInject constructor(private val reposito
                         weatherListItem.main.sea_level.toString(),
                         weatherListItem.main.humidity.toString(),
                         weatherListItem.wind.speed.toString(),
-                        weatherListItem.weather[0].icon
+                        weatherListItem.weather[0].icon,
+                        weatherListItem.weather[0].description
                     )
                 dailyWeatherList.add(dailyWeather)
             }
@@ -55,7 +55,7 @@ class WeatherForecastViewModel @ViewModelInject constructor(private val reposito
             _weatherResponse.postValue(Resource.loading(null))
             repository.getWeatherForecast(latitude, longitude, units).let { response ->
                 if (response.isSuccessful) {
-                    response.body()?.let { getDailyForeCastData(it) }
+                    response.body()?.let { setWeatherForecastList(it) }
                     _weatherResponse.postValue(Resource.success(response.body()))
                 } else _weatherResponse.postValue(
                     Resource.error(

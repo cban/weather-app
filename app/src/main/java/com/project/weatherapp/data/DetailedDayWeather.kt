@@ -13,5 +13,6 @@ data class DetailedDayWeather(
     val sea_level: String,
     val humidity: String,
     val wind: String,
-    val icon: String
+    val icon: String,
+    val description: String
 ) : Parcelable
