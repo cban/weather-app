@@ -6,8 +6,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.animationView.hide()
         binding.weatherAnimation.playAnimation()
-        getLocation()
+        init()
     }
 
     private val mLocationCallback = object : LocationCallback() {
@@ -116,6 +118,24 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, DayForecastDetailActivity::class.java)
         intent.putExtra(DAY_DETAILS_ID, dailyWeather)
         startActivity(intent)
+    }
+
+    private fun init() {
+        if (isOnline()) {
+            getLocation()
+        } else {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(getString(R.string.internet_connection_message))
+                .setTitle(getString(R.string.internet_connection_title))
+            builder.setNeutralButton(
+                getString(R.string.ok_title)
+            ) { dialog, _ ->
+                val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                startActivity(intent)
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
     }
 
     private fun setupHeaderUI(weatherResponse: WeatherResponse?) {
