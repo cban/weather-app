@@ -18,4 +18,6 @@ A Weather application that displays daily temperatures in your area and also vie
 
 6.Bitrise
 
-7.JUnit
+7.Lottie Animations
+
+8.JUnit
