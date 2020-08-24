@@ -2,7 +2,7 @@
 
 [![Build Status](https://app.bitrise.io/app/0326b448df2c7010/status.svg?token=j5OsM8XmksbUdAAdMHq61Q)](https://app.bitrise.io/app/0326b448df2c7010)
 
-A Weather application that displays daily temperatures in your area and also view weather details for a specific day using MVVM with Google Architecture components
+A Weather application that displays daily temperatures based on the user`s location and also view weather details for a specific day.MVVM with Google Architecture components was used for the project
 
 ## Used Libraries and Technologies
 
