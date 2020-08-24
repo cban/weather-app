@@ -22,4 +22,4 @@ A Weather application that displays daily temperatures in your area and also vie
 
 8.JUnit
 
-(https://firebasestorage.googleapis.com/v0/b/harry-potter-963ff.appspot.com/o/Screenshot_20200824-110115.png?alt=media&token=187c248d-6d7d-47fe-be13-8b1c540c46e2)
+|![alt text](https://firebasestorage.googleapis.com/v0/b/harry-potter-963ff.appspot.com/o/Screenshot_20200824-110115.png?alt=media&token=187c248d-6d7d-47fe-be13-8b1c540c46e2)|
