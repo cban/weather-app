@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
@@ -14,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.location.*
 import com.project.weatherapp.R
-import com.project.weatherapp.data.DetailedDayWeather
+import com.project.weatherapp.data.DailyWeather
 import com.project.weatherapp.data.WeatherResponse
 import com.project.weatherapp.databinding.ActivityMainBinding
 import com.project.weatherapp.utils.Status
@@ -34,13 +33,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setContentView(binding.root)
         adapter = WeatherForecastAdapter { dailyDetailedWeather ->
             launchDetailsScreen(dailyDetailedWeather)
-
         }
+
         binding.recyclerView.adapter = adapter
+        binding.animationView.hide()
+        binding.weatherAnimation.playAnimation()
         getLocation()
-        setContentView(binding.root)
     }
 
     private val mLocationCallback = object : LocationCallback() {
@@ -111,41 +112,41 @@ class MainActivity : AppCompatActivity() {
         return locationRequest
     }
 
-    private fun launchDetailsScreen(detailedDayWeather: DetailedDayWeather) {
+    private fun launchDetailsScreen(dailyWeather: DailyWeather) {
         val intent = Intent(this, DayForecastDetailActivity::class.java)
-        intent.putExtra(DAY_DETAILS_ID, detailedDayWeather)
+        intent.putExtra(DAY_DETAILS_ID, dailyWeather)
         startActivity(intent)
     }
 
-    private fun animation(weatherResponse: WeatherResponse?) {
+    private fun setupHeaderUI(weatherResponse: WeatherResponse?) {
         when (weatherResponse?.list?.get(0)?.weather?.get(0)?.main) {
-            "Clear" -> {
-                binding.imgHeader.setAnimation(R.raw.weather_sunny)
+            CLEAR -> {
+                binding.weatherAnimation.setAnimation(R.raw.weather_sunny)
                 binding.mainLayout.setBackgroundResource(R.drawable.dark_background)
             }
-            "Clouds" -> {
-                binding.imgHeader.setAnimation(R.raw.weather_cloudy)
+            CLOUDS -> {
+                binding.weatherAnimation.setAnimation(R.raw.weather_cloudy)
                 binding.mainLayout.setBackgroundResource(R.drawable.dark_background)
             }
-            "Rain", "Drizzle", "Thunderstorm" -> {
-                binding.imgHeader.setAnimation(R.raw.weather_rain)
+            RAIN, DRIZZLE, THUNDERSTORM -> {
+                binding.weatherAnimation.setAnimation(R.raw.weather_rain)
                 binding.mainLayout.setBackgroundResource(R.drawable.dark_background)
             }
             SNOW -> {
-                binding.imgHeader.setAnimation(R.raw.weather_snow)
+                binding.weatherAnimation.setAnimation(R.raw.weather_snow)
                 binding.mainLayout.setBackgroundResource(R.drawable.dark_background)
             }
             else -> {
-                binding.imgHeader.setAnimation(R.raw.weather_cloudy)
+                binding.weatherAnimation.setAnimation(R.raw.weather_cloudy)
                 binding.mainLayout.setBackgroundResource(R.drawable.dark_background)
             }
         }
-        binding.imgHeader.show()
+        binding.weatherAnimation.show()
     }
 
-    private fun updateUi(weatherResponse: WeatherResponse?) {
+    private fun updateViews(weatherResponse: WeatherResponse?) {
         binding.city.text = weatherResponse?.city?.name
-        binding.degrees.text = weatherResponse?.list?.get(0)?.main?.temp.toString()
+        binding.degrees.text = weatherResponse?.list?.get(0)?.main?.temp?.toInt().toString()
         binding.weatherCondition.text = weatherResponse?.list?.get(0)?.weather?.get(0)?.main
         binding.mainLayout.show()
     }
@@ -155,15 +156,22 @@ class MainActivity : AppCompatActivity() {
         viewModel.weatherResponse.observe(this, Observer { weatherResponse ->
             when (weatherResponse.status) {
                 Status.SUCCESS -> {
+                    binding.animationView.pauseAnimation()
                     binding.animationView.hide()
-                    animation(weatherResponse.data)
-                    updateUi(weatherResponse.data)
+                    setupHeaderUI(weatherResponse.data)
+                    updateViews(weatherResponse.data)
                     viewModel.dailyWeatherForecastList.observe(this, Observer {
                         adapter.submitList(it)
                     })
                 }
                 Status.ERROR -> {
                     binding.animationView.hide()
+                    binding.animationView.pauseAnimation()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.load_error_message),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 Status.LOADING -> {
                     binding.animationView.show()
@@ -177,6 +185,11 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_LOCATION_PERMISSION = 100
         private const val UPDATES_INTERVAL = 1000 * 60.toLong()
         private const val FASTEST_UPDATE_INTERVAL = 1000 * 30.toLong()
-        private const val SNOW ="Snow"
+        private const val SNOW = "Snow"
+        private const val CLEAR = "Clear"
+        private const val CLOUDS = "Clouds"
+        private const val RAIN = "Rain"
+        private const val DRIZZLE = "Drizzle"
+        private const val THUNDERSTORM = "Thunderstorm"
     }
 }

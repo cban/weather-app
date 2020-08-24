@@ -5,5 +5,23 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+    <style name="HeadingFont" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">64sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+    <style name="SecondaryHeadingFont" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+    <style name="SecondaryHeading" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 </resources>

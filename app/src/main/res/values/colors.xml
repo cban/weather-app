@@ -6,4 +6,6 @@
     <color name="colorSunny">#9397ff</color>
     <color name="colorCloudy">#6a6eee</color>
     <color name="colorRainy">#7072ad</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorText">#162038</color>
 </resources>

@@ -22,11 +22,11 @@
 
             <TextView
                 android:id="@+id/degrees"
+                style="@style/HeadingFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
                 android:textColor="#FFFFFF"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toTopOf="@+id/degrees" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/img_header"
+                android:id="@+id/weather_animation"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginEnd="8dp"
@@ -61,55 +61,52 @@
 
             <TextView
                 android:id="@+id/weather_condition"
+                style="@style/SecondaryHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/medium_margin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city"
                 app:layout_constraintVertical_bias="1.0"
+                android:textColor="@color/colorWhite"
                 tools:text="clear" />
 
             <TextView
                 android:id="@+id/city"
+                style="@style/SecondaryHeadingFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="32dp"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/degrees"
                 tools:text="Johannesburg" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/small_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

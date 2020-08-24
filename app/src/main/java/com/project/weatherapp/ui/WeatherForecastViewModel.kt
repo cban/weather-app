@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.weatherapp.data.DetailedDayWeather
+import com.project.weatherapp.data.DailyWeather
 import com.project.weatherapp.data.WeatherList
 import com.project.weatherapp.data.WeatherResponse
 import com.project.weatherapp.repository.WeatherRepository
@@ -21,31 +21,31 @@ class WeatherForecastViewModel @ViewModelInject constructor(private val reposito
     val weatherResponse: MutableLiveData<Resource<WeatherResponse>>
         get() = _weatherResponse
 
-    private var _dailyWeatherForecastList = MutableLiveData<List<DetailedDayWeather>>()
-    val dailyWeatherForecastList: LiveData<List<DetailedDayWeather>>
+    private var _dailyWeatherForecastList = MutableLiveData<List<DailyWeather>>()
+    val dailyWeatherForecastList: LiveData<List<DailyWeather>>
         get() = _dailyWeatherForecastList
 
     private fun setWeatherForecastList(response: WeatherResponse) {
         val weatherList: List<WeatherList> = response.list
-        val dailyWeatherList: MutableList<DetailedDayWeather> = arrayListOf()
-        weatherList.forEach { weatherListItem ->
-            if (weatherListItem.dt_txt.endsWith("12:00:00")) {
-                val day: String = formatWeek(weatherListItem.dt_txt)
-                val dailyWeather =
-                    DetailedDayWeather(
-                        day,
-                        weatherListItem.main.temp.toString(),
-                        weatherListItem.main.temp_min.toString(),
-                        weatherListItem.main.temp_max.toString(),
-                        weatherListItem.main.pressure.toString(),
-                        weatherListItem.main.sea_level.toString(),
-                        weatherListItem.main.humidity.toString(),
-                        weatherListItem.wind.speed.toString(),
-                        weatherListItem.weather[0].icon,
-                        weatherListItem.weather[0].description
-                    )
-                dailyWeatherList.add(dailyWeather)
-            }
+        val dailyWeatherList: MutableList<DailyWeather> = arrayListOf()
+        val filteredWeatherList = weatherList.filter { it.dt_txt.endsWith("12:00:00") }
+
+        filteredWeatherList.forEach { weatherListItem ->
+            val day: String = formatWeek(weatherListItem.dt_txt)
+            val dailyWeather =
+                DailyWeather(
+                    day,
+                    weatherListItem.main.temp,
+                    weatherListItem.main.temp_min,
+                    weatherListItem.main.temp_max,
+                    weatherListItem.main.pressure.toString(),
+                    weatherListItem.main.sea_level.toString(),
+                    weatherListItem.main.humidity.toString(),
+                    weatherListItem.wind.speed.toString(),
+                    weatherListItem.weather[0].icon,
+                    weatherListItem.weather[0].description
+                )
+            dailyWeatherList.add(dailyWeather)
         }
         _dailyWeatherForecastList.postValue(dailyWeatherList)
     }

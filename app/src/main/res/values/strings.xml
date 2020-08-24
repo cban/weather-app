@@ -4,6 +4,7 @@
     <string name="icon_url">http://openweathermap.org/img/w/%1$s.png</string>
     <string name="percentage">%1$s %%</string>
     <string name="speed">%1$s Km/h</string>
+    <string name="load_error_message">Failed to load weather data</string>
     <string name="minimum_temp">Minimum temp</string>
     <string name="maximum_temp">Maximum temp</string>
     <string name="pressure">Pressure</string>
