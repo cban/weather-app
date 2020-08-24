@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="degrees_celcius">°C</string>
+    <string name="icon_url">http://openweathermap.org/img/w/%1$s.png</string>
+    <string name="percentage">%1$s %%</string>
+    <string name="speed">%1$s Km/h</string>
+    <string name="load_error_message">Failed to load weather data</string>
+    <string name="minimum_temp">Minimum temp</string>
+    <string name="maximum_temp">Maximum temp</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="permissions_error">Permissions Denied</string>
+    <string name="sea_level">Sea Level</string>
+    <string name="wind">Wind</string>
 </resources>

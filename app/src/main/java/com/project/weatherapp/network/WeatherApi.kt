@@ -8,10 +8,10 @@ import retrofit2.http.Query
 
 interface WeatherApi {
 
-    @GET("weather")
+    @GET("forecast")
     suspend fun getDailyForecast(
-        @Query("lat") latitude: String?,
-        @Query("lon") longitude: String?,
-        @Query("units") units: String?
+        @Query("lat") latitude: String,
+        @Query("lon") longitude: String,
+        @Query("units") units: String
     ): Response<WeatherResponse>
 }

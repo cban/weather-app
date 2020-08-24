@@ -34,7 +34,7 @@ object NetworkModule {
         return Interceptor { chain ->
             val request = chain.request()
                 .newBuilder()
-                .addHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com")
+                .addHeader("x-rapidapi-host","community-open-weather-map.p.rapidapi.com")
                 .addHeader("x-rapidapi-key", API_KEY)
                 .build()
             return@Interceptor chain.proceed(request)
@@ -44,12 +44,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
-        interceptor: Interceptor, httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    fun provideOkHttpClient(interceptor: Interceptor, httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG) builder.addInterceptor(httpLoggingInterceptor)
-            .addInterceptor(interceptor)
+            builder.addInterceptor(interceptor)
 
         return builder.build()
     }
